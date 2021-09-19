@@ -1,16 +1,27 @@
 import "./styles.css";
-// 保存用
+
 const onClickAdd = () => {
+  // テキストボックスの値を取得し、初期化する
   const inputText = document.getElementById("add-text").value;
   document.getElementById("add-text").value = "";
 
+  createUndoneList(inputText);
+};
+
+// 未完了リストから指定の要素を削除
+const deleteFromUndoneList = (target) => {
+  document.getElementById("undone-list").removeChild(target);
+};
+
+// 未完了リストに追加する関数
+const createUndoneList = (text) => {
   // div生成
   const div = document.createElement("div");
   div.className = "list-row";
 
   // liタグ生成
   const li = document.createElement("li");
-  li.innerText = inputText;
+  li.innerText = text;
 
   // button(完了)タグ生成
   const doneButton = document.createElement("button");
@@ -32,14 +43,23 @@ const onClickAdd = () => {
     const li = document.createElement("li");
     li.innerText = text;
 
-    // buttonタグの生成
+    // buttonタグ生成
     const backButton = document.createElement("button");
     backButton.innerText = "戻す";
+    backButton.addEventListener("click", () => {
+      // 押された戻すボタンの親タグ（div）を完了リストから削除
+      const deleteTarget = backButton.parentNode;
+      document.getElementById("done-list").removeChild(deleteTarget);
+
+      // テキスト取得
+      const text = backButton.parentNode.firstElementChild.innerText;
+      createUndoneList(text);
+    });
 
     // divタグの子要素に各要素を設定
     addTarget.appendChild(li);
     addTarget.appendChild(backButton);
-    console.log(addTarget);
+
     // 完了リストに追加
     document.getElementById("done-list").appendChild(addTarget);
   });
@@ -48,7 +68,7 @@ const onClickAdd = () => {
   const deleteButton = document.createElement("button");
   deleteButton.innerText = "削除";
   deleteButton.addEventListener("click", () => {
-    // 推された削除ボタンの親タグ（div）を完了リストから削除
+    // 押された削除ボタンの親タグ（div）を未完了リストから削除
     deleteFromUndoneList(deleteButton.parentNode);
   });
 
@@ -57,13 +77,8 @@ const onClickAdd = () => {
   div.appendChild(doneButton);
   div.appendChild(deleteButton);
 
-  // 未完了のリストに追加
+  // 未完了リストに追加
   document.getElementById("undone-list").appendChild(div);
-
-  // 未完了リストから指定の要素を削除
-  const deleteFromUndoneList = (target) => {
-    document.getElementById("undone-list").removeChild(target);
-  };
 };
 
 document
