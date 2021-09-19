@@ -1,5 +1,5 @@
 import "./styles.css";
-
+// 保存用
 const onClickAdd = () => {
   const inputText = document.getElementById("add-text").value;
   document.getElementById("add-text").value = "";
@@ -12,18 +12,44 @@ const onClickAdd = () => {
   const li = document.createElement("li");
   li.innerText = inputText;
 
-  // button(完了)タグせいｓ
+  // button(完了)タグ生成
   const doneButton = document.createElement("button");
   doneButton.innerText = "完了";
-  doneButton.addEventListener("click", () => {});
+  doneButton.addEventListener("click", () => {
+    // 押された完了ボタンの親タグ（div）を未完了リストから削除
+    deleteFromUndoneList(doneButton.parentNode);
 
-  // button(削除)タグせいｓ
+    // 完了リストに追加する要素
+    const addTarget = doneButton.parentNode;
+
+    // TODO内容テキストを取得
+    const text = addTarget.firstElementChild.innerText;
+
+    // div以下を初期化
+    addTarget.textContent = null;
+
+    // liタグを生成
+    const li = document.createElement("li");
+    li.innerText = text;
+
+    // buttonタグの生成
+    const backButton = document.createElement("button");
+    backButton.innerText = "戻す";
+
+    // divタグの子要素に各要素を設定
+    addTarget.appendChild(li);
+    addTarget.appendChild(backButton);
+    console.log(addTarget);
+    // 完了リストに追加
+    document.getElementById("done-list").appendChild(addTarget);
+  });
+
+  // button(削除)タグ生成
   const deleteButton = document.createElement("button");
   deleteButton.innerText = "削除";
   deleteButton.addEventListener("click", () => {
     // 推された削除ボタンの親タグ（div）を完了リストから削除
-    const deleteTarget = deleteButton.parentNode;
-    document.getElementById("undone-list").removeChild(deleteTarget);
+    deleteFromUndoneList(deleteButton.parentNode);
   });
 
   // divタグの子要素に各要素を設定
@@ -33,6 +59,11 @@ const onClickAdd = () => {
 
   // 未完了のリストに追加
   document.getElementById("undone-list").appendChild(div);
+
+  // 未完了リストから指定の要素を削除
+  const deleteFromUndoneList = (target) => {
+    document.getElementById("undone-list").removeChild(target);
+  };
 };
 
 document
