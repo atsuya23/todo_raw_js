@@ -15,15 +15,15 @@ const onClickAdd = () => {
   // button(完了)タグせいｓ
   const doneButton = document.createElement("button");
   doneButton.innerText = "完了";
-  doneButton.addEventListener("click", () => {
-    alert("完了");
-  });
+  doneButton.addEventListener("click", () => {});
 
   // button(削除)タグせいｓ
   const deleteButton = document.createElement("button");
   deleteButton.innerText = "削除";
   deleteButton.addEventListener("click", () => {
-    alert("削除");
+    // 推された削除ボタンの親タグ（div）を完了リストから削除
+    const deleteTarget = deleteButton.parentNode;
+    document.getElementById("undone-list").removeChild(deleteTarget);
   });
 
   // divタグの子要素に各要素を設定
